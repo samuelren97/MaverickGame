@@ -1,0 +1,272 @@
+@startuml MaverickBomber
+
+abstract Action {
+    + executer(): void <<virtual>>
+}
+
+class ActionInput {
+    - m_logiqueJeu : LogiqueJeu*
+    - m_codeInput: const char*
+
+    + ctor(p_logiqueJeu: LogiqueJeu*, p_codeInput: const char*)
+    + executer(): void <<override>>
+}
+ActionInput -u-|> Action
+ActionInput "0" --> "1" LogiqueJeu
+
+class ActionReset {
+    - m_wifiManager: WiFiManager*
+    
+    + ctor(p_wifiManager: WiFiManager*)
+    + executer(): void <<override>>
+}
+ActionReset -u-|> Action
+ActionReset "0" --> "1" WiFiManager
+
+class Affichage4Digits {
+    - m_proxy: Affichage4DigitsProxy*
+    + ctor(p_proxy: Affichage4DigitsProxy*)
+    + afficher(p_d1: const uint8_t&, p_d2: const uint8_t&, p_d3: const uint8_t&, p_d4: const uint8_t&): void
+    + afficherEntier(p_valeur: const uint16_t&, p_base: const uint8_t&): void
+    + afficherReel(p_valeur: const float&): void
+    - valeurSegment(p_valeur: const uint8_t&): uint8_t
+}
+Affichage4Digits "0" -u-> "1" Affichage4DigitsProxy
+
+abstract Affichage4DigitsProxy {
+    + afficher(p_d1: const uint8_t&, p_d2: const uint8_t&, p_d3: const uint8_t&, p_d4: const uint8_t&): void <<virtual>>
+}
+
+class Affichage4DigitsProxyTM1637 {
+    - m_tm1637: TM11637*
+    + ctor(p_pinHorloge: const uint8_t&, p_pinDonnees: const uint8_t&)
+    + afficher(p_d1: const uint8_t&, p_d2: const uint8_t&, p_d3: const uint8_t&, p_d4: const uint8_t&): void <<override>>
+}
+Affichage4DigitsProxyTM1637 --|> Affichage4DigitsProxy
+
+class BME {
+    - m_bme: Adafruit_BME280*
+
+    + ctor(p_adresse: const uint8_t&)
+    + temperature() const: float
+    + pression() const: float
+    + altitude() const: float
+    + humidite() const: float
+}
+
+class Bouton {
+    - m_pin: uint8_t
+    - m_actionBoutonRelache: Action*
+    - m_actionBoutonAppuye: Action*
+    - m_etatPrecedent: uint8_t
+    - m_etatPrecedentStable: uint8_t
+    - m_dateDernierChangementEtat: unsigned long
+    + ctor(p_pin: uint8_t)
+    + actionBoutonAppuye(p_actionBoutonAppuye: Action*): void
+    + actionBoutonRelache(p_actionBoutonRelache: Action*): void
+    + tick(): void <<override>>
+    - executerActionBoutonRelache(): void
+    - executerActionBoutonAppuye(): void
+}
+Bouton -u-|> Tache
+Bouton "0" -u-> "2" Action
+
+class Buzzer {
+    - m_etat: uint8_t
+    - m_dateDernierChangementDureeCountdown: unsigned long
+    - m_dateDernierChangement: unsigned long
+    - m_pin: uint8_t
+    - m_dureeBuzz: unsigned long
+    - m_dureeDepuisDebutCountdown: uint16_t
+    - m_estEnFonction: bool
+    - m_dureeCountdownEnSecondes: uint16_t
+    - m_etapeMusicale: uint8_t
+    - m_frequence: uint16_t
+
+    + ctor(p_pin: const uint8_t&, p_dureeCountdown: const uint16_t& p_dureeCountdown)
+    + ctor(p_pin: const uint8_t&, p_dureeCountdown: const uint16_t& p_dureeCountdown, p_dureeBuzz: const unsigned long&)
+    + lancerCountdown(): void
+    + lancerCountdown(p_dureeCountdown: const uint16_t&): void
+    + arreterCountdown(): void
+    + dureeBuzz(p_dureeBuzz: unsigned long&): void
+    + buzzVictoire(): void
+    + buzzExplosion(): void
+    + buzzPenalite(): void
+    + tick(): void <<override>>
+}
+Buzzer -u-|> Tache
+
+class DEL {
+    - m_pin: uint8_t
+    - m_intensite: uint8_t
+    - m_dureeAllumee: unsigned long
+    - m_dureeEteinte: unsigned long
+    - m_dateDernierChangementEtat: unsigned long
+    - m_dutyCycle: float
+    - m_estClignotant: uint8_t
+    - m_etatActuel: uint8_t
+
+    + DEL(p_pin: uint8_t)
+    + DEL(p_pin: uint8_t, p_dutyCycle: float)
+    + allumer(p_dutyCycle: float): void
+    + allumer(): void
+    + eteindre(): void
+    + clignoter(): void
+    + basculerClignotement(): void
+    + activerClignoter(): void
+    + cesserClignoter(): void
+    + estClignotante(): bool
+    + ajusterIntervals(p_dureeAllumee: unsigned long, p_dureeEteinte: unsigned long): void
+    + tick(): void <<override>>
+    + etat() const: int
+}
+DEL -u-|> Tache
+
+class LCD1602 {
+    - m_proxy LCD1602Proxy*
+    + ctor(p_proxy: LCD1602Proxy*)
+    + definirPositionCurseur(p_colonne: const uint8_t&, p_ligne: const uint8_t&): void
+    + afficher(p_texte: cosnt String&) const: void
+    + effacer() const: void
+}
+LCD1602 "0" --> "1" LCD1602Proxy
+
+abstract LCD1602Proxy {
+    + definirPositionCurseur(p_colonne: const uint8_t&, p_ligne: const uint8_t&): void <<virtual>>
+    + afficher(p_texte: cosnt String&) const: void <<virtual>>
+    + effacer() const: void <<virtual>>
+}
+
+class LCD1602ProxyI2C {
+    - m_lcd: LiquidCrystal_I2C*
+    + ctor()
+    + definirPositionCurseur(p_colonne: const uint8_t&, p_ligne: const uint8_t&): void <<override>>
+    + afficher(p_texte: cosnt String&) const: void <<override>>
+    + effacer() const: void <<override>>
+}
+LCD1602ProxyI2C -u-|> LCD1602Proxy
+
+class List<TypeElement> {
+    - m_capacite: int
+    - m_nbElements: int
+    - m_elements: TypeElement*
+    + ctor(p_capacite: const int&)
+    + dctor()
+    + ajouter(p_element: const TypeElement&): void
+    + modifier(p_indice: const int&, const TypeElement&): void
+    + obtenir(p_indice: const int&): TypeElement
+    + nombreElements(): const int
+    + begin() const: TypeElement*
+    + end() const: TypeElement*
+}
+
+class LogiqueJeu {
+    - m_clientMQTT: PubSubClient*
+    - m_del: DEL*
+    - m_4digits: Affichage4Digits*
+    - m_lcd: LCD1602*
+    - m_buzzer: Buzzer*
+    - m_taches: List<Tache*>
+    - m_countDownEnSecondes: uint16_t
+    - m_countDownInitial: uint16_t
+    - m_dateDernierChangementCountdown: unsigned long
+    - m_dateDernierChangementPenalite: unsigned long
+    - m_dateDernierEnvoiDeDonnees: unsigned long
+    - m_estEnJeu: bool
+    - m_dureePenaliteEnSecondes: uint8_t
+    - m_sequenceATrouver: char*
+    - m_indexSequence: uint8_t
+    - m_etat: uint8_t
+    - m_segmentAttente: uint8_t
+    - m_nomUnique: String
+
+    + ctor(p_lcd: LCD1602*, p_clientMQTT: PubSubClient*, p_del: DEL*)
+    + demarrerJeu(): void
+    + gererInputs(p_codeInput: const char*): void
+    + setNiveau(p_niveau: const Niveau&): void
+    + tick(): void <<override>>
+
+    - mettreEnEtatPenalite(p_dureePenaliteEnSecondes: const uint8_t&): void
+    - gererEtatPenalite(p_dateActuelle: const unsigned long&): void
+    - gererEtatEnJeu(p_dateActuelle: const unsigned long&): void
+    - gererEnvoiDesDonnees(p_dateActuelle: const unsigned long&):void
+    - animer4Digits(p_dateActuelle: const unsigned long&): void
+}
+LogiqueJeu -u-|> Tache
+LogiqueJeu "0" -u-> "1" DEL
+LogiqueJeu "0" --> "1" Affichage4Digits
+LogiqueJeu "0" --> "1" LCD1602
+LogiqueJeu "0" --> "1" Buzzer
+LogiqueJeu "0" --> "2" Tache
+LogiqueJeu --> List
+LogiqueJeu ..> Niveau
+
+class Niveau {
+    sequenceATrouver: const char*
+    dureePenaliteEnSecondes: uint8_t
+    countDownEnSecondes: uint16_t
+}
+
+class Program {
+    - m_parametreServeurMQTT: WiFiManagerParameter*
+    - m_parametreUserMQTT: WiFiManagerParameter*
+    - m_parametrePasswordMQTT: WiFiManagerParameter*
+    - m_wifiManager: WiFiManager*
+    - m_clientWifi: WiFiClient
+    - m_clientMQTT: PubSubClient*
+    - m_boutonRouge: Bouton*
+    - m_boutonBleu: Bouton*
+    - m_boutonVert: Bouton*
+    - m_boutonJaune: Bouton*
+    - m_boutonReset: Bouton*
+    - m_fil1: Bouton*
+    - m_bme: BME*
+    - m_del: DEL*
+    - m_lcd: LCD1602*
+    - m_logiqueJeu: LogiqueJeu*
+    - m_serveurWeb: ServeurWeb*
+    - m_taches: List<Tache*>
+    - m_dateDerniereLectureBME: unsigned long
+    - m_nomUnique: String
+
+    + Program()
+    + loop(): void
+
+    - envoyerDonnees(): void
+    - connectionMQTT(): bool
+    - envoyerDecouvertes(): void
+    - chargerParametres(): void
+}
+Program "0" -r-> "1" WiFiManagerParameter
+Program "0" --> "1" WiFiManager
+Program "0" -r-> "1" WiFiClient
+Program "0" -r-> "1" PubSubClient
+Program "0" --> "6" Bouton
+Program "0" -u-> "1" BME
+Program "0" -l-> "1" DEL
+Program "0" --> "1" LCD1602
+Program "0" --> "1" LogiqueJeu
+Program "0" -u-> "1" ServeurWeb
+Program "0" --> "1" List
+Program "0" --> "9" Tache
+
+class ServeurWeb {
+    - m_logiqueJeu: LogiqueJeu*
+    - m_webServer: WebServer*
+    + ctor(p_logiqueJeu: LogiqueJeu*)
+    - optionsCors() const: void
+    - envoyerCors() const: void
+    - afficherRacine(): void
+    - ajouterFichiersStatiques(p_debutNomFichier: Srting const&): void
+    - ajouterFichiersStatiques(p_debutNomFichier: String const&, p_repertoireCourant: String const&, p_fichier: File&): void
+    - ressourceNonTrouvee(p_nomFichier: String const&): void
+}
+ServeurWeb -u-|> Tache
+ServeurWeb "0" --> "1" LogiqueJeu
+ServeurWeb "0" --> "1" WebServer
+
+abstract Tache { 
+    + tick(): void <<virtual>>
+}
+
+@enduml

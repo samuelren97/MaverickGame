@@ -1,0 +1,17 @@
+* {
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+body {
+    background-image: url('/images/logo.png');
+    background-repeat: no-repeat;
+    /* 1560 */
+}
+
+@media screen and (min-width: 1560px) {
+    body {
+        background-size: cover;
+    }
+}

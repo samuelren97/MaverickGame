@@ -1,0 +1,26 @@
+// PIN
+#define PIN_BOUTON_ROUGE 34
+#define PIN_BOUTON_BLEU 17
+#define PIN_BOUTON_VERT 36
+#define PIN_BOUTON_JAUNE 39
+#define PIN_BOUTON_RESET 35
+#define PIN_FIL_1 16
+#define PIN_FIL_2 27
+#define PIN_FIL_3 14
+#define PIN_CLK 18
+#define PIN_DIO 19
+#define PIN_BUZZER 23
+#define LED_ROUGE 26
+#define LED_VERTE 25
+
+// ADRESSES COMPOSANTS
+#define ADRESSE_BME 0x76
+
+// DELAIS
+#define DELAIS_ENVOI_DONNEES 5000
+
+// RESEAU
+#define SSID_PORTAIL "Mavrick Bomb"
+#define PASSWORD_PORTAIL "Bombastic123"
+#define FICHIER_CONFIG "/appsettings.json"
+#define MQTT_PORT 1883

@@ -1,0 +1,20 @@
+[
+    {
+        "sequenceATrouver": "BVvb",
+        "dureePenaliteEnSecondes": 10,
+        "countdownEnSecondes": 60,
+        "instructions": "Commencez par appuyer sur le bouton bleu, ensuite sur un autre bouton, puis relâchez ces boutons dans l'ordre inverse."
+    },
+    {
+        "sequenceATrouver": "XJBjbxBRbr",
+        "dureePenaliteEnSecondes": 15,
+        "countdownEnSecondes": 120,
+        "instructions": "Connectez le fil, appuyez sur les boutons jaune et bleu. Relâchez-les, débranchez le fil et répétez l'opération avec le bleu, puis le rouge"
+    },
+    {
+        "sequenceATrouver": "JXjVvBxb",
+        "dureePenaliteEnSecondes": 10,
+        "countdownEnSecondes": 60,
+        "instructions": "Maintenir bouton jaune, ensuite connectez le fil. Relâchez jaune. Appuyez vert. Maintenir bleu. Il ne reste plus qu'à décider si vous relâchez le bouton avant, ou après avoir déconnecté le fil."
+    }
+]

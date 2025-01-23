@@ -1,0 +1,87 @@
+[
+    {
+        "availability_topic": "#{idUnique}#/availability",
+        "device": {
+            "identifiers": "e490a61b5ae0",
+            "manufacturer": "SRAB Technology",
+            "model": "Maverick Bomb v1",
+            "name": "Capteur de Bombe",
+            "sw_version": "f76f4640798cf77257362636b100103d"
+        },
+        "device_class": "pressure",
+        "unit_of_measurement": "hPa",
+        "unique_id": "#{idUnique}#_pression",
+        "name": "Pression",
+        "state_topic": "#{idUnique}#/pression",
+        "platform": "mqtt",
+        "discovery_topic": "homeassistant/sensor/#{idUnique}#_pression/config"
+    },
+    {
+        "availability_topic": "#{idUnique}#/availability",
+        "device": {
+            "identifiers": "e490a61b5ae0",
+            "manufacturer": "SRAB Technology",
+            "model": "Maverick Bomb v1",
+            "name": "Capteur de Bombe",
+            "sw_version": "f76f4640798cf77257362636b100103d"
+        },
+        "device_class": "temperature",
+        "unit_of_measurement": "°C",
+        "unique_id": "#{idUnique}#_temperature",
+        "name": "Temperature",
+        "state_topic": "#{idUnique}#/temperature",
+        "platform": "mqtt",
+        "discovery_topic": "homeassistant/sensor/#{idUnique}#_temperature/config"
+    },
+    {
+        "availability_topic": "#{idUnique}#/availability",
+        "device": {
+            "identifiers": "e490a61b5ae0",
+            "manufacturer": "SRAB Technology",
+            "model": "Maverick Bomb v1",
+            "name": "Capteur de Bombe",
+            "sw_version": "f76f4640798cf77257362636b100103d"
+        },
+        "device_class": "humidity",
+        "unit_of_measurement": "%",
+        "unique_id": "#{idUnique}#_humidite",
+        "name": "Humidite",
+        "state_topic": "#{idUnique}#/humidite",
+        "platform": "mqtt",
+        "discovery_topic": "homeassistant/sensor/#{idUnique}#_humidite/config"
+    },
+    {
+        "availability_topic": "#{idUnique}#/availability",
+        "device": {
+            "identifiers": "e490a61b5ae0",
+            "manufacturer": "SRAB Technology",
+            "model": "Maverick Bomb v1",
+            "name": "Capteur de Bombe",
+            "sw_version": "f76f4640798cf77257362636b100103d"
+        },
+        "device_class": "switch",
+        "unique_id": "#{idUnique}#_led",
+        "name": "LED",
+        "command_topic": "#{idUnique}#/led/set",
+        "state_topic": "#{idUnique}#/led",
+        "platform": "mqtt",
+        "discovery_topic": "homeassistant/switch/#{idUnique}#_led/config"
+    },
+    {
+        "availability_topic": "#{idUnique}#/availability",
+        "device": {
+            "identifiers": "e490a61b5ae0",
+            "manufacturer": "SRAB Technology",
+            "model": "Maverick Bomb v1",
+            "name": "Capteur de Bombe",
+            "sw_version": "f76f4640798cf77257362636b100103d"
+        },
+        "device_class": "duration",
+        "unit_of_measurement": "s",
+        "unique_id": "#{idUnique}#_temps",
+        "name": "Temps restant",
+        "state_topic": "#{idUnique}#/temps",
+        "platform": "mqtt",
+        "discovery_topic": "homeassistant/sensor/#{idUnique}#_temps/config"
+    }
+]
